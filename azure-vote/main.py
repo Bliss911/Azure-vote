@@ -25,18 +25,18 @@ from applicationinsights import TelemetryClient
 # Logging
 logger = logging.getLogger(__name__)           
 logger.addHandler(AzureLogHandler(             
-    connection_string='InstrumentationKey=61ce63fd-28ae-4607-a633-ddba9f7bcbfb')
+    connection_string='InstrumentationKey=60c45676-cc93-48c4-8859-45a1306f977c;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/')
 )
 
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(                               
     enable_standard_metrics=True,                                               
-    connection_string='InstrumentationKey=61ce63fd-28ae-4607-a633-ddba9f7bcbfb')
+    connection_string='InstrumentationKey=60c45676-cc93-48c4-8859-45a1306f977c;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/')
 
 # Tracing
 tracer = Tracer(                                                                
     exporter=AzureExporter(                                                     
-        connection_string='InstrumentationKey=61ce63fd-28ae-4607-a633-ddba9f7bcbfb'),
+        connection_string='InstrumentationKey=60c45676-cc93-48c4-8859-45a1306f977c;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/'),
     sampler=ProbabilitySampler(1.0),                                            
 )
 
@@ -47,7 +47,7 @@ tc = TelemetryClient('61ce63fd-28ae-4607-a633-ddba9f7bcbfb')
 # Requests
 middleware = FlaskMiddleware(                               
     app,                                                    
-    exporter=AzureExporter(connection_string='InstrumentationKey=61ce63fd-28ae-4607-a633-ddba9f7bcbfb'),
+    exporter=AzureExporter(connection_string='InstrumentationKey=60c45676-cc93-48c4-8859-45a1306f977c;IngestionEndpoint=https://westus-0.in.applicationinsights.azure.com/'),
     sampler=ProbabilitySampler(rate=1.0),                   
 )
 
@@ -71,6 +71,19 @@ else:
 
 # Redis Connection
 r = redis.Redis()
+redis_server = os.environ['REDIS']
+
+# Redis Connection to another container
+# try:
+#     if "REDIS_PWD" in os.environ:
+#         r = redis.StrictRedis(host=redis_server,
+#                         port=6379,
+#                         password=os.environ['REDIS_PWD'])
+#     else:
+#         r = redis.Redis(redis_server)
+#     r.ping()
+# except redis.ConnectionError:
+#     exit('Failed to connect to Redis, terminating.')
 
 # Change title to host name to demo NLB
 if app.config['SHOWHOST'] == "true":
