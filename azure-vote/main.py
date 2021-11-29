@@ -25,29 +25,29 @@ from applicationinsights import TelemetryClient
 # Logging
 logger = logging.getLogger(__name__)           
 logger.addHandler(AzureLogHandler(             
-    connection_string='InstrumentationKey=74f7b593-36f3-4749-bc9a-4318af19130b')
+    connection_string='InstrumentationKey=42af550e-9ed1-4895-9c57-2dd10e79b746')
 )
 
 # Metrics
 exporter = metrics_exporter.new_metrics_exporter(                               
     enable_standard_metrics=True,                                               
-    connection_string='InstrumentationKey=74f7b593-36f3-4749-bc9a-4318af19130b')
+    connection_string='InstrumentationKey=42af550e-9ed1-4895-9c57-2dd10e79b746')
 
 # Tracing
 tracer = Tracer(                                                                
     exporter=AzureExporter(                                                     
-        connection_string='InstrumentationKey=74f7b593-36f3-4749-bc9a-4318af19130b'),
+        connection_string='InstrumentationKey=42af550e-9ed1-4895-9c57-2dd10e79b746'),
     sampler=ProbabilitySampler(1.0),                                            
 )
 
 app = Flask(__name__)
 
-tc = TelemetryClient('74f7b593-36f3-4749-bc9a-4318af19130b')
+tc = TelemetryClient('42af550e-9ed1-4895-9c57-2dd10e79b746')
 
 # Requests
 middleware = FlaskMiddleware(                               
     app,                                                    
-    exporter=AzureExporter(connection_string='InstrumentationKey=74f7b593-36f3-4749-bc9a-4318af19130b'),
+    exporter=AzureExporter(connection_string='InstrumentationKey=42af550e-9ed1-4895-9c57-2dd10e79b746'),
     sampler=ProbabilitySampler(rate=1.0),                   
 )
 
